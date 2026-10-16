@@ -194,3 +194,35 @@ document.getElementById("gatepass-form").addEventListener("submit", async (e) =>
 });
 
 window.onload = init;
+// AI Auto-Triage Integration
+const titleInput = document.getElementById("complaint-title");
+const descInput = document.getElementById("complaint-desc");
+
+async function autoTriageComplaint() {
+  const title = titleInput.value.trim();
+  const desc = descInput.value.trim();
+
+  if (desc.length > 5) {
+    try {
+      const res = await fetch("http://127.0.0.1:8001/predict-category/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: title, description: desc })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.category && data.category !== "General") {
+          document.getElementById("complaint-category").value = data.category;
+        }
+        if (data.priority) {
+          document.getElementById("complaint-priority").value = data.priority;
+        }
+      }
+    } catch (err) {
+      console.warn("AI service not responding:", err);
+    }
+  }
+}
+
+// Automatically trigger AI classification when the user leaves the description box
+descInput.addEventListener("blur", autoTriageComplaint);
