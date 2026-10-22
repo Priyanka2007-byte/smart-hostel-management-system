@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Hostel Management System</title>
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Chart.js for Interactive Bar & Pie Graphs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
   <div class="app-layout">
@@ -13,83 +15,126 @@
     <aside class="sidebar">
       <div class="brand">
         <div class="brand-icon">🏢</div>
-        <h2>SmartHostel</h2>
+        <div class="brand-text">
+          <h2>SmartHostel</h2>
+          <span class="badge-mini">AI-Powered Portal</span>
+        </div>
       </div>
       <nav class="nav-menu">
         <button class="nav-item active" data-tab="dashboard">
-          <span class="icon">📊</span> Dashboard
+          <span class="icon">📊</span> Dashboard & Analytics
         </button>
         <button class="nav-item" data-tab="complaints">
-          <span class="icon">🛠️</span> Complaints
+          <span class="icon">🛠️</span> Grievance & Triage
         </button>
         <button class="nav-item" data-tab="gatepasses">
-          <span class="icon">🎫</span> Gate Passes
+          <span class="icon">🎫</span> Gate Pass Clearance
+        </button>
+        <button class="nav-item" data-tab="approvals">
+          <span class="icon">👥</span> Mentor & Parent Hierarchy
         </button>
         <button class="nav-item" data-tab="residents">
-          <span class="icon">👥</span> Residents
+          <span class="icon">📋</span> Resident Directory
         </button>
       </nav>
-      <div class="connection-status" id="conn-status">
+      <div class="connection-status">
         <span class="status-indicator"></span>
-        <span id="conn-text">Connecting...</span>
+        <span id="conn-text">Active Cloud Demo</span>
       </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main Content Area -->
     <main class="main-content">
       
-      <!-- 1. DASHBOARD TAB -->
+      <!-- 1. DASHBOARD & VISUAL ANALYTICS -->
       <section id="tab-dashboard" class="tab-pane active">
         <header class="section-header">
-          <h1>Dashboard Overview</h1>
-          <p class="subtitle">Live real-time hostel monitoring & operations</p>
+          <h1>Hostel Intelligence Dashboard</h1>
+          <p class="subtitle">Live monitoring, grievance SLA metrics, and outing clearance status</p>
         </header>
 
+        <!-- Top Stat Cards -->
         <div class="stats-grid">
-          <div class="stat-card">
-            <h3>Registered Residents</h3>
-            <div class="stat-number" id="dash-residents">4</div>
-            <span class="stat-sub">Active in Hostel</span>
+          <div class="stat-card cyan-card">
+            <div class="card-icon">👥</div>
+            <div>
+              <h3>Total Residents</h3>
+              <div class="stat-number" id="dash-residents">4</div>
+              <span class="stat-sub">Across Blocks A & B</span>
+            </div>
           </div>
-          <div class="stat-card">
-            <h3>Active Complaints</h3>
-            <div class="stat-number alert" id="dash-complaints">2</div>
-            <span class="stat-sub">1 Pending • 1 In Progress</span>
+          <div class="stat-card red-card">
+            <div class="card-icon">🚨</div>
+            <div>
+              <h3>Pending / Urgent</h3>
+              <div class="stat-number" id="dash-urgent">1</div>
+              <span class="stat-sub">24-hour SLA Target</span>
+            </div>
           </div>
-          <div class="stat-card">
-            <h3>Gate Passes Active</h3>
-            <div class="stat-number" id="dash-gatepasses">1</div>
-            <span class="stat-sub">Requires Approval</span>
+          <div class="stat-card yellow-card">
+            <div class="card-icon">🔄</div>
+            <div>
+              <h3>In-Progress Issues</h3>
+              <div class="stat-number" id="dash-inprogress">1</div>
+              <span class="stat-sub">Work Order Assigned</span>
+            </div>
+          </div>
+          <div class="stat-card green-card">
+            <div class="card-icon">✅</div>
+            <div>
+              <h3>Resolved Grievances</h3>
+              <div class="stat-number" id="dash-resolved">2</div>
+              <span class="stat-sub">100% Student Verified</span>
+            </div>
           </div>
         </div>
 
+        <!-- Bar Graphs & Charts Section -->
+        <div class="charts-grid">
+          <div class="panel chart-box">
+            <h2>📊 Complaint Distribution by Category</h2>
+            <div class="canvas-container">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </div>
+          <div class="panel chart-box">
+            <h2>🎫 Outing Gate Pass Approval Status</h2>
+            <div class="canvas-container">
+              <canvas id="gatePassChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Complaints Table -->
         <div class="panel">
-          <h2>Recent Complaints & Escalation</h2>
+          <div class="panel-header">
+            <h2>Recent High-Priority Complaints</h2>
+            <span class="badge badge-urgent">Live Feed</span>
+          </div>
           <div class="table-container">
             <table>
               <thead>
                 <tr>
                   <th>ID</th>
                   <th>Student Name</th>
+                  <th>Room</th>
                   <th>Category</th>
                   <th>Title</th>
                   <th>Priority</th>
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody id="dash-complaints-table">
-                <!-- Dynamically rendered -->
-              </tbody>
+              <tbody id="dash-complaints-table"></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- 2. COMPLAINTS TAB -->
+      <!-- 2. COMPLAINTS & AI TRIAGE -->
       <section id="tab-complaints" class="tab-pane">
         <header class="section-header">
-          <h1>Hostel Grievance & AI Triage</h1>
-          <p class="subtitle">File issues with automated NLP emergency prioritization</p>
+          <h1>Student Grievance & AI Auto-Triage</h1>
+          <p class="subtitle">NLP-based automated urgency triage with full lifecycle monitoring</p>
         </header>
 
         <div class="panel">
@@ -97,12 +142,10 @@
           <form id="complaint-form" class="form-grid">
             <div class="form-group">
               <label>Select Resident</label>
-              <select id="complaint-resident" required>
-                <option value="">-- Choose Resident --</option>
-              </select>
+              <select id="complaint-resident" required></select>
             </div>
             <div class="form-group">
-              <label>Category <span class="ai-badge">AI Assisted</span></label>
+              <label>Category <span class="ai-badge">AI Auto-Detect</span></label>
               <select id="complaint-category" required>
                 <option value="General">General</option>
                 <option value="Electrical">Electrical</option>
@@ -115,18 +158,18 @@
               <label>Priority</label>
               <select id="complaint-priority" required>
                 <option value="Low">Low (72h SLA)</option>
-                <option value="Medium" selected>Medium (48h SLA)</option>
+                <option value="Medium">Medium (48h SLA)</option>
                 <option value="High">High (24h SLA)</option>
                 <option value="Urgent">Urgent (Immediate)</option>
               </select>
             </div>
             <div class="form-group full-width">
-              <label>Title</label>
+              <label>Issue Title</label>
               <input type="text" id="complaint-title" placeholder="e.g. Ceiling fan sparked and stopped" required>
             </div>
             <div class="form-group full-width">
-              <label>Description (AI will auto-classify based on your words)</label>
-              <textarea id="complaint-desc" rows="3" placeholder="Describe the issue in detail..." required></textarea>
+              <label>Detailed Description</label>
+              <textarea id="complaint-desc" rows="3" placeholder="Explain the fault (AI will auto-classify upon clicking outside)..." required></textarea>
             </div>
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">Submit Complaint</button>
@@ -135,99 +178,123 @@
         </div>
 
         <div class="panel">
-          <h2>All Complaints & Live Lifecycle Tracking</h2>
+          <h2>All Grievance Records</h2>
           <div class="table-container">
             <table>
               <thead>
                 <tr>
                   <th>ID</th>
                   <th>Student Name</th>
+                  <th>Room</th>
                   <th>Category</th>
                   <th>Title</th>
                   <th>Priority</th>
-                  <th>Status</th>
+                  <th>SLA</th>
+                  <th>Current Status</th>
                   <th>Faculty / Admin Action</th>
                 </tr>
               </thead>
-              <tbody id="complaints-table-body">
-                <!-- Dynamically populated -->
-              </tbody>
+              <tbody id="complaints-table-body"></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- 3. GATE PASSES TAB -->
+      <!-- 3. GATE PASSES CLEARANCE -->
       <section id="tab-gatepasses" class="tab-pane">
         <header class="section-header">
           <h1>Digital Gate Pass & Outing Clearance</h1>
-          <p class="subtitle">Two-tier approval workflow: Parent SMS/OTP + Mentor/Faculty clearance</p>
+          <p class="subtitle">Multi-tier verified student exit authorization</p>
         </header>
 
         <div class="panel">
-          <h2>Request Outstation / Night Out Pass</h2>
+          <h2>Apply for Gate Pass</h2>
           <form id="gatepass-form" class="form-grid">
             <div class="form-group">
-              <label>Select Resident</label>
-              <select id="gatepass-resident" required>
-                <option value="">-- Choose Resident --</option>
-              </select>
+              <label>Resident</label>
+              <select id="gatepass-resident" required></select>
             </div>
             <div class="form-group">
               <label>Assigned Faculty Mentor</label>
-              <input type="text" id="gatepass-mentor" value="Prof. R. K. Mohapatra (CSE Dept)" readonly>
+              <input type="text" id="gatepass-mentor-info" value="Prof. R. K. Mohapatra (CSE Dept - Cabin 302)" readonly>
             </div>
             <div class="form-group">
-              <label>Out Time & Date</label>
+              <label>Expected Departure</label>
               <input type="datetime-local" id="gatepass-out" required>
             </div>
             <div class="form-group">
-              <label>Expected Return Time & Date</label>
+              <label>Expected Return</label>
               <input type="datetime-local" id="gatepass-in" required>
             </div>
             <div class="form-group full-width">
-              <label>Purpose / Reason for Leave</label>
-              <input type="text" id="gatepass-reason" placeholder="e.g. Going home for festive weekend" required>
+              <label>Reason for Leave</label>
+              <input type="text" id="gatepass-reason" placeholder="e.g. Attending family function" required>
             </div>
             <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Submit Gate Pass Request</button>
+              <button type="submit" class="btn btn-primary">Generate Pass Request</button>
             </div>
           </form>
         </div>
 
         <div class="panel">
-          <h2>Gate Pass Records & Dual Approval Workflow</h2>
+          <h2>Live Gate Passes Table</h2>
           <div class="table-container">
             <table>
               <thead>
                 <tr>
                   <th>Pass ID</th>
-                  <th>Student Name</th>
+                  <th>Student</th>
                   <th>Reason</th>
                   <th>Out Time</th>
                   <th>In Time</th>
-                  <th>Parent Approval</th>
+                  <th>Parent Consent</th>
                   <th>Mentor Approval</th>
-                  <th>Final Gate Clearance</th>
+                  <th>Security Gate Clearance</th>
                 </tr>
               </thead>
-              <tbody id="gatepass-table-body">
-                <!-- Dynamically populated -->
-              </tbody>
+              <tbody id="gatepass-table-body"></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- 4. RESIDENTS TAB -->
-      <section id="tab-residents" class="tab-pane">
+      <!-- 4. PARENTS & MENTOR HIERARCHY -->
+      <section id="tab-approvals" class="tab-pane">
         <header class="section-header">
-          <h1>Hostel Residents Directory</h1>
-          <p class="subtitle">Manage hostel student allocations and parent contacts</p>
+          <h1>Approval Authorities & Hierarchy</h1>
+          <p class="subtitle">Detailed overview of how Parents, Wardens, and Mentors are mapped to students</p>
         </header>
 
         <div class="panel">
-          <h2>Register New Resident</h2>
+          <h2>Student $\leftrightarrow$ Guardian $\leftrightarrow$ Faculty Mentor Mapping</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Room</th>
+                  <th>Registered Parent / Guardian</th>
+                  <th>Parent Contact</th>
+                  <th>Verification Mode</th>
+                  <th>Assigned Faculty Mentor</th>
+                  <th>Mentor Cabin</th>
+                </tr>
+              </thead>
+              <tbody id="hierarchy-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. RESIDENT DIRECTORY -->
+      <section id="tab-residents" class="tab-pane">
+        <header class="section-header">
+          <h1>Hostel Residents Directory</h1>
+          <p class="subtitle">Room allocations and student enrollment</p>
+        </header>
+
+        <div class="panel">
+          <h2>Register Resident</h2>
           <form id="resident-form" class="form-grid">
             <div class="form-group">
               <label>Full Name</label>
@@ -235,34 +302,36 @@
             </div>
             <div class="form-group">
               <label>Email Address</label>
-              <input type="email" id="res-email" placeholder="student@example.com" required>
+              <input type="email" id="res-email" placeholder="student@university.edu" required>
             </div>
             <div class="form-group">
               <label>Room Number</label>
               <input type="text" id="res-room" placeholder="e.g. B-204" required>
             </div>
+            <div class="form-group">
+              <label>Parent Contact</label>
+              <input type="text" id="res-parent" placeholder="+91 98765 00000" required>
+            </div>
             <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Register Resident</button>
+              <button type="submit" class="btn btn-primary">Enroll Resident</button>
             </div>
           </form>
         </div>
 
         <div class="panel">
-          <h2>Resident Directory</h2>
+          <h2>Enrolled Residents</h2>
           <div class="table-container">
             <table>
               <thead>
                 <tr>
                   <th>ID</th>
                   <th>Full Name</th>
-                  <th>Email</th>
                   <th>Room</th>
-                  <th>Guardian Contact</th>
+                  <th>Email</th>
+                  <th>Guardian</th>
                 </tr>
               </thead>
-              <tbody id="residents-table-body">
-                <!-- Dynamically populated -->
-              </tbody>
+              <tbody id="residents-table-body"></tbody>
             </table>
           </div>
         </div>
