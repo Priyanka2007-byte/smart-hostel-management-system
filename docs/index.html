@@ -257,16 +257,22 @@
           </div>
         </div>
       </section>
-
-      <!-- 4. PARENTS & MENTOR HIERARCHY -->
+<!-- 4. PARENT & MENTOR APPROVAL DESKS -->
       <section id="tab-approvals" class="tab-pane">
         <header class="section-header">
-          <h1>Approval Authorities & Hierarchy</h1>
-          <p class="subtitle">Detailed overview of how Parents, Wardens, and Mentors are mapped to students</p>
+          <h1>Approval Desks & Stakeholder Routing</h1>
+          <p class="subtitle">Live routing of student requests to registered parents and assigned faculty mentors</p>
         </header>
 
+        <!-- A. PARENT INBOX -->
         <div class="panel">
-          <h2>Student $\leftrightarrow$ Guardian $\leftrightarrow$ Faculty Mentor Mapping</h2>
+          <div class="panel-header">
+            <h2>👨‍👩‍👦 Parent Gate Pass Verification Portal</h2>
+            <span class="badge badge-low">Automated SMS / WhatsApp Gateway</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+            When a resident applies for leave, an automated authorization request is routed directly to the registered parent's mobile number.
+          </p>
           <div class="table-container">
             <table>
               <thead>
@@ -274,13 +280,66 @@
                   <th>Student Name</th>
                   <th>Room</th>
                   <th>Registered Parent / Guardian</th>
-                  <th>Parent Contact</th>
-                  <th>Verification Mode</th>
-                  <th>Assigned Faculty Mentor</th>
-                  <th>Mentor Cabin</th>
+                  <th>Parent Mobile</th>
+                  <th>Pass Reason & Dates</th>
+                  <th>Consent Status</th>
+                  <th>Parent Action</th>
                 </tr>
               </thead>
-              <tbody id="hierarchy-table-body"></tbody>
+              <tbody id="parent-approval-table">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- B. FACULTY MENTOR DESK -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>👨‍🏫 Faculty Mentor Academic & Leave Review Desk</h2>
+            <span class="badge badge-medium">Tier-2 Clearance Authority</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
+            Mentors receive gate passes for leave endorsement (after parent consent) and urgent escalated grievances raised by their mentees.
+          </p>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Assigned Faculty Mentor</th>
+                  <th>Department & Cabin</th>
+                  <th>Mentee Student</th>
+                  <th>Pending Review Item</th>
+                  <th>Type</th>
+                  <th>Review Status</th>
+                  <th>Mentor Action</th>
+                </tr>
+              </thead>
+              <tbody id="mentor-approval-table">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- C. MASTER MAPPING DIRECTORY -->
+        <div class="panel">
+          <h2>🔗 Student ↔ Parent ↔ Mentor Master Hierarchy</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Room</th>
+                  <th>Parent Name</th>
+                  <th>Parent Contact</th>
+                  <th>Assigned Faculty Mentor</th>
+                  <th>Mentor Department</th>
+                </tr>
+              </thead>
+              <tbody id="hierarchy-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
             </table>
           </div>
         </div>
