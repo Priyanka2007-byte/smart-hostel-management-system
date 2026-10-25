@@ -6,7 +6,6 @@
   <title>Smart Hostel Management System</title>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Chart.js for Interactive Bar & Pie Graphs -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -53,20 +52,19 @@
           <p class="subtitle">Live monitoring, grievance SLA metrics, and outing clearance status</p>
         </header>
 
-        <!-- Top Stat Cards -->
         <div class="stats-grid">
           <div class="stat-card cyan-card">
             <div class="card-icon">👥</div>
             <div>
               <h3>Total Residents</h3>
-              <div class="stat-number" id="dash-residents">4</div>
-              <span class="stat-sub">Across Blocks A & B</span>
+              <div class="stat-number" id="dash-residents">5</div>
+              <span class="stat-sub">Across All Blocks</span>
             </div>
           </div>
           <div class="stat-card red-card">
             <div class="card-icon">🚨</div>
             <div>
-              <h3>Pending / Urgent</h3>
+              <h3>Pending Grievances</h3>
               <div class="stat-number" id="dash-urgent">1</div>
               <span class="stat-sub">24-hour SLA Target</span>
             </div>
@@ -84,12 +82,11 @@
             <div>
               <h3>Resolved Grievances</h3>
               <div class="stat-number" id="dash-resolved">2</div>
-              <span class="stat-sub">100% Student Verified</span>
+              <span class="stat-sub">Verified & Closed</span>
             </div>
           </div>
         </div>
 
-        <!-- Bar Graphs & Charts Section -->
         <div class="charts-grid">
           <div class="panel chart-box">
             <h2>📊 Complaint Distribution by Category</h2>
@@ -105,7 +102,6 @@
           </div>
         </div>
 
-        <!-- Recent Complaints Table -->
         <div class="panel">
           <div class="panel-header">
             <h2>Recent High-Priority Complaints</h2>
@@ -169,7 +165,7 @@
             </div>
             <div class="form-group full-width">
               <label>Detailed Description</label>
-              <textarea id="complaint-desc" rows="3" placeholder="Explain the fault (AI will auto-classify upon clicking outside)..." required></textarea>
+              <textarea id="complaint-desc" rows="3" placeholder="Explain the fault in detail..." required></textarea>
             </div>
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">Submit Complaint</button>
@@ -211,24 +207,28 @@
           <h2>Apply for Gate Pass</h2>
           <form id="gatepass-form" class="form-grid">
             <div class="form-group">
-              <label>Resident</label>
+              <label>Select Resident</label>
               <select id="gatepass-resident" required></select>
             </div>
             <div class="form-group">
-              <label>Assigned Faculty Mentor</label>
-              <input type="text" id="gatepass-mentor-info" value="Prof. R. K. Mohapatra (CSE Dept - Cabin 302)" readonly>
+              <label>Mapped Parent / Guardian</label>
+              <input type="text" id="gatepass-parent-info" value="Select a student to load parent" readonly style="background:#131c31; color:#38bdf8;">
             </div>
             <div class="form-group">
-              <label>Expected Departure</label>
+              <label>Assigned Faculty Mentor</label>
+              <input type="text" id="gatepass-mentor-info" value="Select a student to load mentor" readonly style="background:#131c31; color:#34d399;">
+            </div>
+            <div class="form-group">
+              <label>Expected Departure Date & Time</label>
               <input type="datetime-local" id="gatepass-out" required>
             </div>
             <div class="form-group">
-              <label>Expected Return</label>
+              <label>Expected Return Date & Time</label>
               <input type="datetime-local" id="gatepass-in" required>
             </div>
             <div class="form-group full-width">
               <label>Reason for Leave</label>
-              <input type="text" id="gatepass-reason" placeholder="e.g. Attending family function" required>
+              <input type="text" id="gatepass-reason" placeholder="e.g. Attending family function, Medical checkup" required>
             </div>
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">Generate Pass Request</button>
@@ -257,11 +257,12 @@
           </div>
         </div>
       </section>
-<!-- 4. PARENT & MENTOR APPROVAL DESKS -->
+
+      <!-- 4. PARENTS & MENTOR HIERARCHY -->
       <section id="tab-approvals" class="tab-pane">
         <header class="section-header">
           <h1>Approval Desks & Stakeholder Routing</h1>
-          <p class="subtitle">Live routing of student requests to registered parents and assigned faculty mentors</p>
+          <p class="subtitle">Live routing of student requests to registered parents and department-assigned faculty mentors</p>
         </header>
 
         <!-- A. PARENT INBOX -->
@@ -270,9 +271,6 @@
             <h2>👨‍👩‍👦 Parent Gate Pass Verification Portal</h2>
             <span class="badge badge-low">Automated SMS / WhatsApp Gateway</span>
           </div>
-          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
-            When a resident applies for leave, an automated authorization request is routed directly to the registered parent's mobile number.
-          </p>
           <div class="table-container">
             <table>
               <thead>
@@ -286,9 +284,7 @@
                   <th>Parent Action</th>
                 </tr>
               </thead>
-              <tbody id="parent-approval-table">
-                <!-- Dynamically populated -->
-              </tbody>
+              <tbody id="parent-approval-table"></tbody>
             </table>
           </div>
         </div>
@@ -297,11 +293,8 @@
         <div class="panel">
           <div class="panel-header">
             <h2>👨‍🏫 Faculty Mentor Academic & Leave Review Desk</h2>
-            <span class="badge badge-medium">Tier-2 Clearance Authority</span>
+            <span class="badge badge-medium">Department Wise Faculty Mentors</span>
           </div>
-          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">
-            Mentors receive gate passes for leave endorsement (after parent consent) and urgent escalated grievances raised by their mentees.
-          </p>
           <div class="table-container">
             <table>
               <thead>
@@ -315,16 +308,14 @@
                   <th>Mentor Action</th>
                 </tr>
               </thead>
-              <tbody id="mentor-approval-table">
-                <!-- Dynamically populated -->
-              </tbody>
+              <tbody id="mentor-approval-table"></tbody>
             </table>
           </div>
         </div>
 
         <!-- C. MASTER MAPPING DIRECTORY -->
         <div class="panel">
-          <h2>🔗 Student ↔ Parent ↔ Mentor Master Hierarchy</h2>
+          <h2>🔗 Student ↔ Parent ↔ Faculty Mentor Master Hierarchy</h2>
           <div class="table-container">
             <table>
               <thead>
@@ -334,12 +325,10 @@
                   <th>Parent Name</th>
                   <th>Parent Contact</th>
                   <th>Assigned Faculty Mentor</th>
-                  <th>Mentor Department</th>
+                  <th>Mentor Department & Cabin</th>
                 </tr>
               </thead>
-              <tbody id="hierarchy-table-body">
-                <!-- Dynamically populated -->
-              </tbody>
+              <tbody id="hierarchy-table-body"></tbody>
             </table>
           </div>
         </div>
@@ -349,7 +338,7 @@
       <section id="tab-residents" class="tab-pane">
         <header class="section-header">
           <h1>Hostel Residents Directory</h1>
-          <p class="subtitle">Room allocations and student enrollment</p>
+          <p class="subtitle">Enroll new students with custom parent details and assigned faculty mentor</p>
         </header>
 
         <div class="panel">
@@ -365,11 +354,25 @@
             </div>
             <div class="form-group">
               <label>Room Number</label>
-              <input type="text" id="res-room" placeholder="e.g. B-204" required>
+              <input type="text" id="res-room" placeholder="e.g. G-407" required>
             </div>
             <div class="form-group">
-              <label>Parent Contact</label>
-              <input type="text" id="res-parent" placeholder="+91 98765 00000" required>
+              <label>Parent / Guardian Name</label>
+              <input type="text" id="res-parent-name" placeholder="e.g. Mr. R. Maharana (Father)" required>
+            </div>
+            <div class="form-group">
+              <label>Parent Mobile Number</label>
+              <input type="text" id="res-parent-phone" placeholder="+91 98532 99881" required>
+            </div>
+            <div class="form-group">
+              <label>Assign Faculty Mentor</label>
+              <select id="res-mentor-select" required>
+                <option value="Prof. R. K. Mohapatra|CSE Dept (Cabin 302)">Prof. R. K. Mohapatra (CSE Dept - Cabin 302)</option>
+                <option value="Dr. Sneha Mishra|ECE Dept (Cabin 108)">Dr. Sneha Mishra (ECE Dept - Cabin 108)</option>
+                <option value="Dr. S. K. Rout|IT Dept (Cabin 205)">Dr. S. K. Rout (IT Dept - Cabin 205)</option>
+                <option value="Prof. Ashok Tripathy|Civil Dept (Cabin 114)">Prof. Ashok Tripathy (Civil Dept - Cabin 114)</option>
+                <option value="Dr. P. Sen|Mech Dept (Cabin 401)">Dr. P. Sen (Mech Dept - Cabin 401)</option>
+              </select>
             </div>
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">Enroll Resident</button>
@@ -388,6 +391,7 @@
                   <th>Room</th>
                   <th>Email</th>
                   <th>Guardian</th>
+                  <th>Assigned Mentor</th>
                 </tr>
               </thead>
               <tbody id="residents-table-body"></tbody>
